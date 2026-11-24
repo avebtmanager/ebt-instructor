@@ -1501,7 +1501,9 @@ function render(){
   root.innerHTML=LOCKED?lockHTML():html+sheetHTML();
   if(!LOCKED)mountSigs();
   window.scrollTo(0,y);var sh2=document.getElementById('sheet');if(sh2)sh2.scrollTop=shy;
-  if(aid){var el=document.getElementById(aid);if(el&&el.focus){el.focus({preventScroll:true});try{if(ss!=null)el.setSelectionRange(ss,se);}catch(e){}}}
+  // Devolver el foco solo a campos de texto. En iPad, enfocar de nuevo una lista desplegable (select) o un selector de fecha
+  // vuelve a abrir el menú, y parecía que la opción había que elegirla dos veces.
+  if(aid){var el=document.getElementById(aid);var txt=el&&(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&!/^(checkbox|radio|color|file|range|date|time|datetime-local|month|week|button|submit)$/i.test(el.type)));if(txt&&el.focus){el.focus({preventScroll:true});try{if(ss!=null)el.setSelectionRange(ss,se);}catch(e){}}}
 }
 function boot(){
   S=load();root=document.getElementById('root');
